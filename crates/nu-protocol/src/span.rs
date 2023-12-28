@@ -11,6 +11,17 @@ where
     pub span: Span,
 }
 
+impl<T> std::ops::Deref for Spanned<T>
+where
+    T: Clone + std::fmt::Debug,
+{
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.item
+    }
+}
+
 /// Spans are a global offset across all seen files, which are cached in the engine's state. The start and
 /// end offset together make the inclusive start/exclusive end pair for where to underline to highlight
 /// a given point of interest.
