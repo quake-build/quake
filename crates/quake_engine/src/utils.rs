@@ -27,7 +27,7 @@ pub fn expand_globs(patterns: &[Spanned<String>]) -> Result<Vec<PathBuf>> {
 
     for ps in patterns
         .iter()
-        .map(|s| glob(&s.item).into_diagnostic())
+        .map(|s| glob(s).into_diagnostic())
         .collect::<Result<Vec<_>>>()?
     {
         paths.extend(
