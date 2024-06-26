@@ -1,0 +1,13 @@
+[package]
+name = "quake-nu-engine"
+version = "0.1.0"
+edition = "2021"
+repository.workspace = true
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+nu-plugin.workspace = true
+
+[lints]
+workspace = true

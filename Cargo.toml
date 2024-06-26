@@ -1,0 +1,42 @@
+[workspace]
+members = [
+    "crates/*",
+]
+
+[workspace.package]
+repository = "https://git.sr.ht/~psychic/quake"
+homepage = "https://quake.build"
+license = "BSD-3-Clause"
+
+[workspace.dependencies]
+nu-plugin = "0.94.2"
+nu-plugin-test-support = "0.94.2"
+nu-protocol = "0.94.2"
+quake-core = { path = "crates/quake-core" }
+quake-runtime = { path = "crates/quake-runtime" }
+serde = "1.0.203"
+thiserror = "1.0.61"
+
+[workspace.lints]
+rustdoc.broken_intra_doc_links = "deny"
+
+[profile.release]
+strip = "debuginfo"
+lto = "fat"
+opt-level = "z"
+
+[package]
+name = "quake"
+version = "0.1.0"
+edition = "2021"
+description = "A meta-build system powered by Nushell"
+repository.workspace = true
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow = "1.0.86"
+clap = { version = "4.5.4", features = ["cargo"] }
+quake-core.workspace = true
+quake-runtime.workspace = true
+tokio = { version = "1.37.0", features = ["full"] }

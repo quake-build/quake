@@ -1,0 +1,12 @@
+[package]
+name = "quake-test-support"
+version = "0.1.0"
+edition = "2021"
+repository.workspace = true
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
