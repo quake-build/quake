@@ -1,0 +1,14 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "quake-logger"
+version.workspace = true
+edition = "2024"
+repository.workspace = true
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true

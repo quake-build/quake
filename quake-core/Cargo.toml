@@ -1,0 +1,25 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "quake-core"
+version.workspace = true
+edition = "2024"
+repository.workspace = true
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+chrono.workspace = true
+indexmap.workspace = true
+parking_lot.workspace = true
+miette = { workspace = true, public = true }
+serde = { workspace = true, optional = true, public = true }
+thiserror.workspace = true
+
+[features]
+default = ["serde"]
+serde = ["dep:serde", "chrono/serde", "indexmap/serde", "parking_lot/serde"]
+
+[lints]
+workspace = true

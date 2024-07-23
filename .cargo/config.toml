@@ -1,0 +1,3 @@
+[unstable]
+public-dependency = true
+trim-paths = true

@@ -1,0 +1,20 @@
+cargo-features = ["edition2024"]
+
+[package]
+name = "quake-runtime"
+version.workspace = true
+edition = "2024"
+repository.workspace = true
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+quake-core.workspace = true
+tokio = { workspace = true, features = ["rt"] }
+
+[features]
+default = ["multi-thread"]
+multi-thread = ["tokio/rt-multi-thread"]
+
+[lints]
+workspace = true

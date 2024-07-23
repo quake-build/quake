@@ -9,4 +9,4 @@ After the rewrite has reached a relatively stable state, work-in-progress commit
 
 ## License
 
-quake is licensed under the [BSD-3-Clause license](./LICENSE).
+quake is licensed under the [BSD-2-Clause-Patent license](./LICENSE).

@@ -1,42 +1,115 @@
+# TODO: remove on release of 1.82.0 (hopefully)
+cargo-features = ["edition2024"]
+
 [workspace]
 members = [
-    "crates/*",
+    "quake-core",
+    "quake-nu-engine",
+    "quake-runtime",
+    "quake-test-support",
 ]
 
 [workspace.package]
-repository = "https://git.sr.ht/~psychic/quake"
+version = "0.1.0-alpha"
+repository = "https://git.sr.ht/~quake/quake"
 homepage = "https://quake.build"
-license = "BSD-3-Clause"
+license = "BSD-2-Clause-Patent"
+rust-version = "1.81.0" # (nightly-1.81.0)
 
 [workspace.dependencies]
-nu-plugin = "0.94.2"
-nu-plugin-test-support = "0.94.2"
-nu-protocol = "0.94.2"
-quake-core = { path = "crates/quake-core" }
-quake-runtime = { path = "crates/quake-runtime" }
-serde = "1.0.203"
-thiserror = "1.0.61"
+async-trait = "0.1.81"
+chrono = "0.4.38"
+indexmap = "2.2.6"
+miette = { version = "7.2.0", default-features = false }
+parking_lot = { version = "0.12.3", features = ["arc_lock"] }
+serde = { version = "1.0.204", features = ["derive"] }
+thiserror = "1.0.62"
+tokio = "1.38.1"
 
-[workspace.lints]
-rustdoc.broken_intra_doc_links = "deny"
+nu-ansi-term = "0.50.0"
+nu-cli = "0.95.0"
+nu-cmd-lang = "0.95.0"
+nu-command = "0.95.0"
+nu-engine = "0.95.0"
+nu-glob = "0.95.0"
+nu-protocol = "0.95.0"
+nu-utils = "0.95.0"
+
+quake-core.path = "quake-core"
+quake-logger.path = "quake-logger"
+quake-nu-engine.path = "quake-nu-engine"
+quake-runtime.path = "quake-runtime"
+quake-test-support.path = "quake-test-support"
 
 [profile.release]
-strip = "debuginfo"
 lto = "fat"
 opt-level = "z"
+strip = "debuginfo"
+trim-paths = ["object"]
+
+# Uncontroversial, more pedantic lints
+# TODO: use cargo include feature if/when stabilized
+
+[workspace.lints.clippy]
+cast_possible_truncation = "deny"
+cast_possible_wrap = "deny"
+cast_sign_loss = "deny"
+cloned_instead_of_copied = "warn"
+flat_map_option = "warn"
+future_not_send = "warn"
+implicit_clone = "warn"
+inefficient_to_string = "warn"
+invalid_upcast_comparisons = "warn"
+iter_filter_is_ok = "warn"
+iter_filter_is_some = "warn"
+iter_without_into_iter = "warn"
+manual_c_str_literals = "warn"
+manual_is_variant_and = "warn"
+manual_ok_or = "warn"
+manual_string_new = "warn"
+map_unwrap_or = "warn"
+missing_panics_doc = "warn"
+needless_collect = "warn"
+option_as_ref_cloned = "warn"
+path_buf_push_overwrite = "warn"
+redundant_clone = "warn"
+redundant_closure_for_method_calls = "warn"
+redundant_pub_crate = "warn"
+set_contains_or_insert = "warn"
+str_to_string = "warn"
+string_to_string = "warn"
+suboptimal_flops = "warn"
+tests_outside_test_module = "warn"
+trait_duplication_in_bounds = "warn"
+type_repetition_in_bounds = "warn"
+use_self = "warn"
+verbose_bit_mask = "warn"
+verbose_file_reads = "warn"
+
+[workspace.lints.rustdoc]
+unescaped_backticks = "warn"
 
 [package]
 name = "quake"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition = "2024"
 description = "A meta-build system powered by Nushell"
 repository.workspace = true
 homepage.workspace = true
 license.workspace = true
 
 [dependencies]
-anyhow = "1.0.86"
-clap = { version = "4.5.4", features = ["cargo"] }
-quake-core.workspace = true
-quake-runtime.workspace = true
-tokio = { version = "1.37.0", features = ["full"] }
+# quake-core = { workspace = true, features = ["serde"] }
+# quake-logger.workspace = true
+# quake-nu-engine.workspace = true
+# quake-runtime.workspace = true
+
+clap = { version = "4.5.9", features = ["cargo"] }
+tokio = { workspace = true, features = ["full"] }
+
+[dev-dependencies]
+quake-test-support.workspace = true
+trycmd = "0.15.4"
+
+[lints]
+workspace = true
