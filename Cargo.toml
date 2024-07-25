@@ -97,6 +97,7 @@ description = "A meta-build system powered by Nushell"
 repository.workspace = true
 homepage.workspace = true
 license.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 # quake-core = { workspace = true, features = ["serde"] }
