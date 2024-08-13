@@ -14,7 +14,7 @@ version = "0.1.0-alpha"
 repository = "https://git.sr.ht/~quake/quake"
 homepage = "https://quake.build"
 license = "BSD-2-Clause-Patent"
-rust-version = "1.81.0" # (nightly-1.81.0)
+rust-version = "1.82.0" # (nightly)
 
 [workspace.dependencies]
 async-trait = "0.1.81"
