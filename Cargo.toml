@@ -3,17 +3,14 @@ cargo-features = ["edition2024"]
 
 [workspace]
 members = [
-    "quake-core",
-    "quake-nu-engine",
-    "quake-runtime",
-    "quake-test-support",
+    "crates/*",
 ]
 
 [workspace.package]
-version = "0.1.0-alpha"
+version = "0.1.0-alpha.0"
 repository = "https://git.sr.ht/~quake/quake"
 homepage = "https://quake.build"
-license = "BSD-2-Clause-Patent"
+license = "MPL-2.0"
 rust-version = "1.82.0" # (nightly)
 
 [workspace.dependencies]
@@ -21,10 +18,11 @@ async-trait = "0.1.81"
 chrono = "0.4.38"
 indexmap = "2.2.6"
 miette = { version = "7.2.0", default-features = false }
-parking_lot = { version = "0.12.3", features = ["arc_lock"] }
+parking_lot = { version = "0.12.3", features = ["arc_lock", "send_guard"] }
 serde = { version = "1.0.204", features = ["derive"] }
 thiserror = "1.0.62"
 tokio = "1.38.1"
+trait-variant = "0.1.2"
 
 nu-ansi-term = "0.50.0"
 nu-cli = "0.95.0"
@@ -35,11 +33,12 @@ nu-glob = "0.95.0"
 nu-protocol = "0.95.0"
 nu-utils = "0.95.0"
 
-quake-core.path = "quake-core"
-quake-logger.path = "quake-logger"
-quake-nu-engine.path = "quake-nu-engine"
-quake-runtime.path = "quake-runtime"
-quake-test-support.path = "quake-test-support"
+# TODO: remove to simplify?
+quake-core.path = "crates/quake-core"
+quake-logger.path = "crates/quake-logger"
+quake-nu-engine.path = "crates/quake-nu-engine"
+quake-runtime.path = "crates/quake-runtime"
+quake-test-support.path = "crates/quake-test-support"
 
 [profile.release]
 lto = "fat"

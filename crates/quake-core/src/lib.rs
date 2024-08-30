@@ -1,8 +1,10 @@
 pub mod context;
 pub mod engine;
-pub mod events;
+pub mod error;
+pub mod event;
 pub mod graph;
+pub mod metadata;
 pub mod runtime;
-pub mod tasks;
+pub mod task;
 
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;

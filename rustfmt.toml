@@ -1,3 +1,4 @@
+edition = "2024"
 format_strings = true
 imports_granularity = "Module"
 reorder_impl_items = true

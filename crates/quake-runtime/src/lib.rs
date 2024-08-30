@@ -1,17 +1,35 @@
-// TODO E gen 'ctx, Cow or Yoke?
-// TODO separate scheduler?
-
 use std::borrow::Cow;
 use std::marker::PhantomData;
 
+use quake_core::context::Context;
 use quake_core::engine::Engine;
 
-// TODO think this over
-// pub mod scheduler;
+pub mod scheduler;
+
+pub struct Runtime<E: Engine> {
+    context: Context<E>,
+}
+
+#[derive(Clone)]
+struct RuntimeOptions {
+    #[cfg(feature = "multi-thread")]
+    num_threads: Option<usize>,
+    #[cfg(feature = "multi-thread")]
+    max_concurrent: Option<usize>,
+}
+
+impl Default for RuntimeOptions {
+    fn default() -> Self {
+        Self {
+            num_threads: None,
+            max_concurrent: None,
+        }
+    }
+}
 
 pub struct RuntimeBuilder<E: Engine> {
     options: RuntimeOptions,
-    phantom: PhantomData<E>,
+    _marker: PhantomData<E>,
 }
 
 impl<E: Engine> RuntimeBuilder<E> {
@@ -42,23 +60,7 @@ impl<E> Default for RuntimeBuilder<E> {
     }
 }
 
-pub struct Runtime<E> {
-    // context: Cow,
-}
-
-#[derive(Clone)]
-struct RuntimeOptions {
-    #[cfg(feature = "multi-thread")]
-    num_threads: Option<usize>,
-    #[cfg(feature = "multi-thread")]
-    max_concurrent: Option<usize>,
-}
-
-impl Default for RuntimeOptions {
-    fn default() -> Self {
-        Self {
-            num_threads: None,
-            max_concurrent: None,
-        }
-    }
+pub trait Scheduler: Subscriber {
+    // TODO: make subcontext?
+    async fn run<'rt>(&mut self, rt: RuntimeHandle<'rt>, ctx: &'a Context<E>) -> Result<()>;
 }

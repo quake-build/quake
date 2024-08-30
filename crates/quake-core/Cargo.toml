@@ -11,12 +11,14 @@ rust-version.workspace = true
 
 [dependencies]
 async-trait.workspace = true
-chrono.workspace = true
+chrono = { workspace = true, public = true }
 indexmap.workspace = true
 parking_lot.workspace = true
 miette = { workspace = true, public = true }
 serde = { workspace = true, optional = true, public = true }
 thiserror.workspace = true
+tokio = { workspace = true, features = ["sync"] }
+trait-variant.workspace = true
 
 [features]
 default = ["serde"]

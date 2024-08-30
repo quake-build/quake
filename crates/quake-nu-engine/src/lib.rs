@@ -26,9 +26,9 @@ use crate::{create_engine_state, create_stack};
 pub mod commands;
 pub mod eval;
 pub mod parse;
+pub mod project;
 pub mod types;
 pub mod utils;
-pub mod project;
 
 /// The ID of the `$quake` variable, which holds the internal state of the
 /// program.
@@ -58,7 +58,7 @@ pub struct EngineOptions {
 pub struct NuEngine {
     project: Project,
     _options: EngineOptions,
-    state: Arc<RwLock<State>>,
+    state: Arc<RwLock<Metadata>>,
     engine_state: EngineState,
     stack: Stack,
     task_pool: JoinSet<Result<(TaskCallId, bool), EngineError>>,
@@ -70,7 +70,7 @@ impl NuEngine {
         #[cfg(windows)]
         nu_ansi_term::enable_ansi_support().expect("Failed to initialize ANSI support");
 
-        let state = Arc::new(RwLock::new(State::new()));
+        let state = Arc::new(RwLock::new(Metadata::new()));
 
         let engine_state = create_engine_state(state.clone());
         let stack = create_stack(project.project_root());
@@ -276,7 +276,7 @@ impl NuEngine {
                 };
 
                 // ensure the handle is removed
-                // FIXME remove handle in every branch instead
+                // FIXME: remove handle in every branch instead
                 self.task_handles.lock().remove(&task_call_id);
 
                 if !success {
@@ -394,7 +394,7 @@ impl NuEngine {
             log_info!("running task", &name);
 
             let result = Ok(true);
-            for transform in
+            // for transform in
             let result = eval_task_run_body(call_id, call_span, &engine_state, &mut stack);
 
             let success = match result {
@@ -439,7 +439,7 @@ impl NuEngine {
     }
 }
 
-pub fn create_engine_state(state: Arc<RwLock<State>>) -> EngineState {
+pub fn create_engine_state(state: Arc<RwLock<Metadata>>) -> EngineState {
     let mut engine_state = add_shell_command_context(create_default_context());
 
     // TODO merge with PWD logic below

@@ -1,18 +1,20 @@
 use std::collections::HashMap;
 use std::fmt::Display;
-use std::hash::Hash;
+use std::hash::{BuildHasher, Hash, RandomState};
+use std::marker::PhantomData;
+use std::ops::Deref;
 
-use indexmap::IndexMap;
+use indexmap::map::{Entry as IndexMapEntry, IndexMap};
 use thiserror::Error;
 
 // TODO introduce marker types to differentiate multigraphs from simple graphs
 
 type NodeId = usize;
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Graph<K, N, E = ()>
 where
-    K: Eq + Hash + Display,
+    K: Eq + Hash,
 {
     nodes: IndexMap<K, N>,
     edges: HashMap<NodeId, Vec<(NodeId, E)>>,
@@ -20,14 +22,12 @@ where
 
 impl<K, N, E> Graph<K, N, E>
 where
-    K: Eq + Hash + Display,
+    K: Eq + Hash,
 {
-    #[inline]
     pub fn new() -> Self {
         Default::default()
     }
 
-    #[inline]
     pub fn with_capacity(nodes: usize, edges: usize) -> Self {
         Graph {
             nodes: IndexMap::with_capacity(nodes),
@@ -35,27 +35,22 @@ where
         }
     }
 
-    #[inline]
     pub fn size(&self) -> usize {
         self.nodes.len()
     }
 
-    #[inline]
     pub fn is_empty(&self) -> bool {
         self.nodes.is_empty()
     }
 
-    #[inline]
     pub fn insert_node(&mut self, key: K, node: N) -> Option<N> {
         self.nodes.insert(key, node)
     }
 
-    #[inline]
     pub fn get_node<'a>(&'a self, key: &K) -> Option<&'a N> {
         self.nodes.get(key)
     }
 
-    #[inline]
     pub fn get_node_mut<'a>(&'a mut self, key: &K) -> Option<&'a mut N> {
         self.nodes.get_mut(key)
     }
@@ -127,17 +122,14 @@ where
     // TODO edges_to function
     // (which might invite a redesign of the internals for efficiency)
 
-    #[inline(always)]
     fn id(&self, key: &K) -> Option<usize> {
         self.nodes.get_index_of(key)
     }
 
-    #[inline(always)]
     fn edge(&self, from: &K, to: &K) -> Option<(usize, usize)> {
         Some((self.nodes.get_index_of(from)?, self.nodes.get_index_of(to)?))
     }
 
-    #[inline(always)]
     fn key<'a>(&'a self, index: usize) -> &'a K {
         self.nodes
             .get_index(index)
@@ -150,6 +142,7 @@ impl<K, N, E> Default for Graph<K, N, E>
 where
     K: Eq + Hash,
 {
+    #[inline]
     fn default() -> Self {
         Self {
             nodes: IndexMap::new(),
@@ -162,4 +155,46 @@ where
 pub enum GraphError<K: Display> {
     #[error("invalid key: {0}")]
     InvalidKey(K),
+}
+
+pub struct Entry<'a, K, N, E>
+where
+    K: Eq + Hash,
+{
+    entry: IndexMapEntry<'a, K, N>,
+    graph: &'a mut Graph<K, N, E>,
+}
+
+impl<'a, K, N, E> Entry<'a, K, N, E>
+where
+    K: Eq + Hash,
+{
+    #[inline(always)]
+    fn new(key: &'a K, graph: &'a mut Graph<K, N, E>) -> Self {
+        Self { entry: key, graph }
+    }
+
+    pub fn or_insert(self, node: N) -> &'a mut N {}
+
+    pub fn or_default(self) -> &'a mut N
+    where
+        N: Default,
+    {
+        self.entry.or_default()
+    }
+}
+
+pub struct Node<'a, K, N, E>
+where
+    K: Eq + Hash,
+{
+    todo: PhantomData<&'a (K, N, E)>,
+}
+
+impl<'a, K, N, E> Deref for Node<'a, K, N, E> {
+    type Target = &'a N;
+
+    fn deref(&self) -> &Self::Target {
+        todo!()
+    }
 }
