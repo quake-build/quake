@@ -1,0 +1,23 @@
+version = 1
+
+[[annotations]]
+path = [
+     ".editorconfig",
+     ".gitignore",
+     "Cargo.lock",
+     "Cargo.toml",
+     "README.md",
+     "REUSE.toml",
+     "clippy.toml",
+     "rust-toolchain.toml",
+     "rustfmt.toml",
+     ".cargo/**",
+     "contrib/**",
+     "crates/**",
+     "examples/**", # TODO: CC license?
+     "src/**",
+     "tests/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright 2024 Uredium Technologies"
+SPDX-License-Identifier = "AGPL-3.0-or-later OR MPL-2.0"

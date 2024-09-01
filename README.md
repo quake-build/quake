@@ -9,4 +9,4 @@ After the rewrite has reached a relatively stable state, work-in-progress commit
 
 ## License
 
-quake is licensed under the [BSD-2-Clause-Patent license](./LICENSE).
+quake is dual licensed under [AGPL-3.0-or-later](./LICENSE-AGPL) and [MPL-2.0](./LICENSE-MPL).
